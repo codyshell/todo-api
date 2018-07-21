@@ -48,7 +48,7 @@ app.get('/todos', function(req, res){
 app.get('/todos/:id', function(req, res){
 	var todoId = parseInt(req.params.id);
 	var matchedTodo = _.findWhere(todos, {id: todoId});
-		if(matchedTodo){
+	if(matchedTodo){
 		res.json(matchedTodo);
 	} else {
 		res.status(404).send();
@@ -74,6 +74,18 @@ app.post('/todos', function(req, res){
 	//console.log(body);
 	res.json(body);
 });
+
+app.delete('/todos/:id', function(req, res) {
+	var todoId = parseInt(req.params.id, 10);
+	var matchedTodo = _.findWhere(todos, {id: todoId});
+	if(!matchedTodo){
+		res.status(404).send("Error: Not found");
+	} else{
+		todos = _.without(todos, matchedTodo);
+		res.json(matchedTodo);
+	}
+});
+
 app.listen(PORT, function(){
 	console.log('Express running at port:' + PORT);
 });
